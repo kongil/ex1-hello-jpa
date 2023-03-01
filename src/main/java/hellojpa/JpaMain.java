@@ -15,20 +15,14 @@ public class JpaMain {
         try {
 
             //영속
-            Member member = new Member(200L, "member200");
-            em.persist(member);
+            Member member = em.find(Member.class, 150L);
+            member.setName("AAAAA");
 
-            //준영속 상태로 만드는 법
-            /*
-            em.detach(entity);
-            em.clear();
-            em.close();
-            */
-
-            em.flush();
+//            em.detach(member);
+//            em.clear();
+            Member member2 = em.find(Member.class, 150L);
 
             System.out.println("============================");
-
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
