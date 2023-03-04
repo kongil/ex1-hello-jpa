@@ -13,26 +13,23 @@ public class JpaMain {
         tx.begin();
 
         try {
+            // 팀 저장
+            Team team = new Team();
+            team.setName("teamA");
+            em.persist(team);
 
-            Member member1 = new Member();
-            member1.setUsername("A");
+            // 멤버 저장
+            Member member = new Member();
+            member.setName("memeber1");
+            member.setTeamId(team.getId());
+            em.persist(member);
+            
+            // 조회
+            Member findMember = em.find(Member.class, member.getId());
 
-            Member member2 = new Member();
-            member2.setUsername("B");
+            // 연관관계가 없음
+            Team findTeam = em.find(Team.class, findMember.getTeamId());
 
-            Member member3 = new Member();
-            member3.setUsername("C");
-
-            System.out.println("==========");
-
-//            em.persist(member1);    //1, 51
-//            em.persist(member2);  //MEM
-//            em.persist(member3);  //MEM
-
-            System.out.println("member1.getId() = " + member1.getId());
-            System.out.println("member2.getId() = " + member2.getId());
-            System.out.println("member3.getId() = " + member3.getId());
-            System.out.println("==========");
 
             tx.commit();
         } catch (Exception e) {
