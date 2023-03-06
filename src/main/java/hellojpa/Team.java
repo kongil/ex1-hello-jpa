@@ -38,4 +38,9 @@ public class Team {
     public void setName(String name) {
         this.name = name;
     }
+
+    public void addMember(Member member) {
+        member.setTeam(this);
+        members.add(member);
+    }
 }
