@@ -1,5 +1,7 @@
 package hellojpa;
 
+import org.hibernate.Hibernate;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,15 +17,22 @@ public class JpaMain {
 
         try {
 
-            Member member = new Member();
-            member.setUsername("user1");
-            member.setCreatedBy("kim");
-            member.setCreatedDate(LocalDateTime.now());
+            Member member1 = new Member();
+            member1.setUsername("member1");
+            em.persist(member1);
 
-            em.persist(member);
+            Member member2 = new Member();
+            member2.setUsername("member1");
+            em.persist(member2);
 
             em.flush();
             em.clear();
+
+            Member refMember = em.getReference(Member.class, member1.getId());
+            System.out.println("m1.getClass() = " + refMember.getClass()); //Proxy
+            Hibernate.initialize(refMember); // 강제 초기화
+
+            System.out.println("isLoaded = " + emf.getPersistenceUnitUtil().isLoaded(refMember));
 
             tx.commit();
         } catch (Exception e) {
@@ -34,5 +43,10 @@ public class JpaMain {
         }
 
         emf.close();
+    }
+
+    private static void logic(Member m1, Member m2) {
+        System.out.println("m1 == m2 " + (m1 instanceof Member));
+        System.out.println("m1 == m2 " + (m2 instanceof Member));
     }
 }
