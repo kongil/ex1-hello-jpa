@@ -34,7 +34,6 @@ public class JpaMain {
             Parent findParent = em.find(Parent.class, parent.getId());
             em.remove(findParent);
 
-
             tx.commit();
         } catch (Exception e) {
             e.printStackTrace();
